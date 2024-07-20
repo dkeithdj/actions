@@ -31,6 +31,23 @@ app.route('/api/tensor/bid-nft', tensorBidNft);
 app.route('/api/meteora/swap', meteoraSwap);
 // </--Actions-->
 
+app.get('/actions.json', (c) => {
+  return c.json({
+    rules: [
+      // map all root level routes to an action
+      {
+        pathPattern: '/*',
+        apiPath: '/api/*',
+      },
+      // idempotent rule as the fallback
+      {
+        pathPattern: '/api/**',
+        apiPath: '/api/**',
+      },
+    ],
+  });
+});
+
 app.doc('/doc', {
   info: {
     title: 'An API',
